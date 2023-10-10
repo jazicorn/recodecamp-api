@@ -1,8 +1,8 @@
 get:
   tags:
     - Variables
-  description: Generate question declaring var keyword variable
-  operationId: varDeclareVar
+  description: Generate question declaring let keyword variable
+  operationId: jsVarDeclareLet
   responses:
     '200':
       description: Question generated successfully
@@ -33,13 +33,13 @@ get:
                 example: 1
               task:
                 type: string
-                example: Using the "var" keyword, declare a variable named "${animal}"
+                example: Using the "let" keyword, declare a variable named "${animal}"
               data:
                 type: object
-                example: { keyword: 'var', declaration: animal }
+                example: { keyword: 'let', declaration: animal }
               result:
                 type: object
-                example: { 1 : { answer: 'var ${animal}', completed: false}}
+                example: { 1 : { answer: 'let ${animal}', completed: false}}
               hints:
                 type: object
                 example: { 1 : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.' }
@@ -58,14 +58,14 @@ get:
                 example: Variables
               category_sub:
                 type: string
-                example: declaration
+                example: let
               tags:
                 type: array
-                example: ['Variables', 'declaration', 'var']
+                example: ['Variables', 'declaration', 'let']
               refs:
                 type: object
                 example: {
-                    variables: 'https://developer.mozilla.org/en-US/docs/Learn/JavaScript/First_steps/Variables',
+                    variables: 'https://developer.mozilla.org/en-US/docs/Learn/JavaScript/First_steps/Variables'
                 }
     '500':
       description: Internal Server Error
@@ -76,4 +76,4 @@ get:
             properties:
               message:
                 type: string
-                example: Internal Server Error
+                example: 'Internal Server Error'

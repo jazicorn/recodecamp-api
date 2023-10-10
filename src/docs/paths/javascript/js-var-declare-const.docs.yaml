@@ -1,11 +1,11 @@
 get:
   tags:
     - Variables
-  description: Generates random question pertaining to declaring variables
-  operationId: varDeclareRandom
+  description: Generate question declaring const keyword variable
+  operationId: jsVarDeclareConst
   responses:
     '200':
-      description: Question generated successfully!
+      description: Question generated successfully
       content:
         application/json:
           schema:
@@ -33,13 +33,13 @@ get:
                 example: 1
               task:
                 type: string
-                example: Using the "${keyword}" keyword, declare a variable named "${animal}", and assign it the value "${animalName}".
+                example: Using the "const" keyword, declare a variable named "${animal}"
               data:
                 type: object
-                example: { keyword: keyword, declaration: animal, value: animalName }
+                example: { keyword: 'const', declaration: animal }
               result:
                 type: object
-                example: { 1 : { answer: '${keyword} ${animal} = ${animalName}', completed: false}}
+                example: { 1 : { answer: 'const ${animal}', completed: false}}
               hints:
                 type: object
                 example: { 1 : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.' }
@@ -58,14 +58,14 @@ get:
                 example: Variables
               category_sub:
                 type: string
-                example: declaration
+                example: const
               tags:
                 type: array
-                example: ['Variables', 'declaration','${keyword}']
+                example: ['Variables', 'declaration', 'const']
               refs:
                 type: object
                 example: {
-                  variables: 'https://developer.mozilla.org/en-US/docs/Learn/JavaScript/First_steps/Variables'
+                    variables: 'https://developer.mozilla.org/en-US/docs/Learn/JavaScript/First_steps/Variables',
                 }
     '500':
       description: Internal Server Error
@@ -76,4 +76,4 @@ get:
             properties:
               message:
                 type: string
-                example: 'Internal Server Error'
+                example: Internal Server Error
