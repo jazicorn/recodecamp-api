@@ -1,8 +1,8 @@
 get:
   tags:
     - Variables
-  description: Generate question declaring const keyword variable
-  operationId: varDeclareConst
+  description: Generate question declaring var keyword variable
+  operationId: jsVarDeclareVar
   responses:
     '200':
       description: Question generated successfully
@@ -33,13 +33,13 @@ get:
                 example: 1
               task:
                 type: string
-                example: Using the "const" keyword, declare a variable named "${animal}"
+                example: Using the "var" keyword, declare a variable named "${animal}"
               data:
                 type: object
-                example: { keyword: 'const', declaration: animal }
+                example: { keyword: 'var', declaration: animal }
               result:
                 type: object
-                example: { 1 : { answer: 'const ${animal}', completed: false}}
+                example: { 1 : { answer: 'var ${animal}', completed: false}}
               hints:
                 type: object
                 example: { 1 : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.' }
@@ -58,10 +58,10 @@ get:
                 example: Variables
               category_sub:
                 type: string
-                example: const
+                example: declaration
               tags:
                 type: array
-                example: ['Variables', 'declaration', 'const']
+                example: ['Variables', 'declaration', 'var']
               refs:
                 type: object
                 example: {
