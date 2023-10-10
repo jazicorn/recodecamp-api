@@ -2,7 +2,7 @@ get:
   tags:
     - Variables
   description: Generates random question pertaining to declaring variables
-  operationId: jsVarDeclareRandom
+  operationId: jsVarDeclareAll
   responses:
     '200':
       description: Question generated successfully!
