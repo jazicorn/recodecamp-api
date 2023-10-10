@@ -12,7 +12,7 @@ export const objSingle = (): Q_Type => {
         _QUESTION_LEVEL: 1,
         _QUESTION_POINTS: 1,
         _QUESTION_TASK:
-        `Using "${keyword}" comments, comment the statement: 'Greeting User'.`,
+        `Using "${keyword}" comments, comment the statement: 'prints greeting to console'.`,
         _QUESTION_DATA: { keyword: keyword, value: personName,
             returnValue: `System.out.println("Hello " + ${personName})` },
         _QUESTION_ANSWER_REGEX: ``,
@@ -32,10 +32,9 @@ export const objSingle = (): Q_Type => {
             1 : {
                 answer: `class Main {
                     public static void main(String[] args) {
-                        String user = "${personName}";
                         // ⬇️ Only change code bellow this line
-                        // Greeting User
-                        System.out.println("Hello " + user);
+                        // prints greeting to console
+                        System.out.println("Hello ${personName}");
                         // ⬆️ Only change code abouve this line
                     }
                 }`,
@@ -44,7 +43,7 @@ export const objSingle = (): Q_Type => {
         },
         _QUESTION_HINTS: {},
         _QUESTION_BOILERPLATE:
-        `class Main {\n\tpublic static void main(String[] args) {\n\t\t// ⬇️ Only change code bellow this line\n\t\tString user = "${personName}";\n\n\t\tGreeting User\n\t\tSystem.out.println("Hello " + user);\n\t\t\n\t\t// ⬆️ Only change code abouve this line\n\t}\n}`,
+        `class Main {\n\tpublic static void main(String[] args) {\n\t\t// ⬇️ Only change code bellow this line\n\t\t prints greeting to console\n\t\tSystem.out.println("Hello ${personName}");\n\t\t// ⬆️ Only change code abouve this line\n\t}\n}`,
         _QUESTION_CONDITIONS: {},
         _QUESTION_CONSTRAINTS: {},
         _QUESTION_CATEGORY: 'Comments',
@@ -88,13 +87,13 @@ export const objMulti = (): Q_Type => {
                 answer: `class Main {
                     // ⬇️ Only change code bellow this line
                     /*
-                         Executes function that prints to console greeting to user
+                        Program Purpose | Executes function that prints user greeting to console
                     */
                     // ⬆️ Only change code abouve this line
                     public static void main(String[] args) {
                         String user = "${personName}";
 
-                        System.out.println("Hello " + user);
+                        System.out.println("Hello ${personName}");
 
                     }
                 }`,
@@ -103,7 +102,7 @@ export const objMulti = (): Q_Type => {
         },
         _QUESTION_HINTS: {},
         _QUESTION_BOILERPLATE:
-        `class Main {\n\t// ⬇️ Only change code bellow this line\n\t\n\tProgram Purpose | Executes function that prints to console greeting to user\n\t\n\t// ⬆️ Only change code abouve this line\n\tpublic static void main(String[] args) {\n\t\tString user = "${personName}";\n\n\t\tSystem.out.println("Hello " + user);\n\n\t}\n}`,
+        `class Main {\n\t// ⬇️ Only change code bellow this line\n\t\n\tProgram Purpose | Executes function that prints user greeting to console\n\t\n\t// ⬆️ Only change code abouve this line\n\tpublic static void main(String[] args) {\n\t\tString user = \"${personName}\";\n\n\t\tSystem.out.println(\"Hello ${personName}\");\n\n\t}\n}`,
         _QUESTION_CONDITIONS: {},
         _QUESTION_CONSTRAINTS: {},
         _QUESTION_CATEGORY: 'Comments',
