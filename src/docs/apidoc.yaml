@@ -19,8 +19,8 @@ servers:
 paths:
   /:
     $ref: "src/docs/paths/index.docs.yaml"
-  /javascript/var/declare/random:
-    $ref: "src/docs/paths/javascript/js-var-declare-random.docs.yaml"
+  /javascript/var/declare/all:
+    $ref: "src/docs/paths/javascript/js-var-declare-all.docs.yaml"
   /javascript/var/declare/var:
     $ref: "src/docs/paths/javascript/js-var-declare-var.docs.yaml"
   /javascript/var/declare/const:
