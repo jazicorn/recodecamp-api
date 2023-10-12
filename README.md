@@ -11,15 +11,15 @@
 
 ---
 
-> API Repository for [recodecamp](https://recodecamp-web.vercel.app/)
+> API Repository for [https://github.com/jazicorn/recodecamp](https://github.com/jazicorn/recodecamp)
 
 ## About
 
 [Recodecamp](https://recodecamp-web.vercel.app/) helps your study and learn programing fundamentals. This repository contains the API utilized for the website.
 
-If your're looking for API endpoint information. Documentation can be found [here](https://recodecamp.readme.io/).
+If your're looking for API endpoint information, documentation can be found [here](https://recodecamp.readme.io/).
 
-### Features
+## Features
 
 ...
 
