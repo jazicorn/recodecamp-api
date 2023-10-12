@@ -2,8 +2,8 @@ openapi: 3.0.1
 info:
   version: 1.0.0
   title: ReCodeCamp API - Documentation
-  description: API Documentation for ReCodeCamp.com
-  termsOfService: https://recodecamp.com/terms
+  description: API Documentation for recodecamp
+  termsOfService: https://recodecamp-web.vercel.app/terms
   contact:
     name: Jazicorn
     email: jazicorndev@gmail.com
@@ -14,17 +14,20 @@ info:
 servers:
   - url: https://recodecamp-api.vercel.app
     description: Production Server
-  - url: http://localhost:8000/
-    description: Local Server
 paths:
   /:
-    $ref: "src/docs/paths/index.docs.yaml"
+    $ref: 'src/docs/paths/index.docs.yaml'
+  /categories/javascript:
+    $ref: 'src/docs/paths/categories/javascript.docs.yaml'
+  /categories/java:
+    $ref: 'src/docs/paths/categories/java.docs.yaml'
+  /categories/python:
+    $ref: 'src/docs/paths/categories/python.docs.yaml'
   /javascript/var/declare/all:
-    $ref: "src/docs/paths/javascript/js-var-declare-all.docs.yaml"
+    $ref: 'src/docs/paths/langs/javascript/js-var-declare-all.docs.yaml'
   /javascript/var/declare/var:
-    $ref: "src/docs/paths/javascript/js-var-declare-var.docs.yaml"
+    $ref: 'src/docs/paths/langs/javascript/js-var-declare-var.docs.yaml'
   /javascript/var/declare/const:
-    $ref: "src/docs/paths/javascript/js-var-declare-const.docs.yaml"
+    $ref: 'src/docs/paths/langs/javascript/js-var-declare-const.docs.yaml'
   /javascript/var/declare/let:
-    $ref: "src/docs/paths/javascript/js-var-declare-let.docs.yaml"
-
+    $ref: 'src/docs/paths/langs/javascript/js-var-declare-let.docs.yaml'

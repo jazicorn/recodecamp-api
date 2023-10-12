@@ -1,0 +1,64 @@
+get:
+  tags:
+    - categories
+  description: Routes for questions in the Java programming language
+  operationId: categoryJava
+  responses:
+    '200':
+      description: Routes Generated Successfully
+      content:
+        application/json:
+          schema:
+            type: array
+            properties:
+              id:
+                type: integer
+                example: 1
+              category:
+                type: array
+                example: ['comments', 'comments/all']
+              subCategories:
+                type: object
+                properties:
+                  singleLine:
+                    type: array
+                    example: ['comments/single/all']
+                  multiLine:
+                    type: array
+                    example: ['comments/multi/all']
+              info:
+                type: object
+                properties:
+                  sources:
+                    type: array
+                    example:
+                      {
+                        'w3schools': 'https://www.w3schools.com/java/java_comments.asp',
+                      }
+                  desc:
+                    type: array
+                    example:
+                      {
+                        'paragraph': 'Comments can be used to explain Java code, and to make it more readable. It can also be used to prevent execution when testing alternative code.',
+                      }
+              tags:
+                type: array
+                example:
+                  [
+                    'Java',
+                    'comments',
+                    'singleline',
+                    'multiline',
+                    'documentation',
+                  ]
+
+    '500':
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: 'Internal Server Error'
