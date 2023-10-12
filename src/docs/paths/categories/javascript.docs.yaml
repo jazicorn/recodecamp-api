@@ -10,49 +10,49 @@ get:
         application/json:
           schema:
             type: array
-            subject:
+            items:
               type: object
               properties:
                 id:
                   type: integer
-                  example: 1
                 category:
                   type: array
-                  example: ['comments', 'comments/all']
+                  items:
+                    type: string
                 subCategories:
                   type: object
                   properties:
                     singleLine:
                       type: array
-                      example: ['comments/single/all']
+                      items:
+                        type: string
                     multiLine:
                       type: array
-                      example: ['comments/multi/all']
+                      items:
+                        type: string
                 info:
                   type: object
                   properties:
                     sources:
                       type: array
-                      example:
-                        {
-                          'w3schools': https://www.w3schools.com/js/js_comments.asp",
-                        }
+                      items:
+                        type: object
+                        properties:
+                          site:
+                            type: string
+                          link:
+                            type: string
                     desc:
-                      type: array
-                      example:
-                        {
-                          'paragraph': 'JavaScript comments can be used to explain JavaScript code, and to make it more readable. JavaScript comments can also be used to prevent execution, when testing alternative code.',
-                        }
+                      type: object
+                      properties:
+                        strFormat:
+                          type: string
+                        strInfo:
+                          type: string
                 tags:
                   type: array
-                  example:
-                    [
-                      'Javascript',
-                      'comments',
-                      'singleline',
-                      'multiline',
-                      'documentation',
-                    ]
+                  items:
+                    type: string
 
     '500':
       description: Internal Server Error
@@ -61,6 +61,5 @@ get:
           schema:
             type: object
             properties:
-              message:
+              errorMessage:
                 type: string
-                example: 'Internal Server Error'
