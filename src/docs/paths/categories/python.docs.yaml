@@ -9,7 +9,6 @@ get:
       content:
         application/json:
           schema:
-          schema:
             type: array
             subject:
               type: object
