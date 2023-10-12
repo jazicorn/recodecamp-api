@@ -9,48 +9,51 @@ get:
       content:
         application/json:
           schema:
+          schema:
             type: array
-            properties:
-              id:
-                type: integer
-                example: 1
-              category:
-                type: array
-                example: ['comments', 'comments/all']
-              subCategories:
-                type: object
-                properties:
-                  singleLine:
-                    type: array
-                    example: ['comments/single/all']
-                  multiLine:
-                    type: array
-                    example: ['comments/multi/all']
-              info:
-                type: object
-                properties:
-                  sources:
-                    type: array
-                    example:
-                      {
-                        'w3schools': 'https://www.w3schools.com/python/python_comments.asp',
-                      }
-                  desc:
-                    type: array
-                    example:
-                      {
-                        'paragraph': 'Comments can be used to explain Python code. Comments can be used to make the code more readable. Comments can be used to prevent execution when testing code.',
-                      }
-              tags:
-                type: array
-                example:
-                  [
-                    'Python',
-                    'comments',
-                    'singleline',
-                    'multiline',
-                    'documentation',
-                  ]
+            subject:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  example: 1
+                category:
+                  type: array
+                  example: ['comments', 'comments/all']
+                subCategories:
+                  type: object
+                  properties:
+                    singleLine:
+                      type: array
+                      example: ['comments/single/all']
+                    multiLine:
+                      type: array
+                      example: ['comments/multi/all']
+                info:
+                  type: object
+                  properties:
+                    sources:
+                      type: array
+                      example:
+                        {
+                          'w3schools': 'https://www.w3schools.com/python/python_comments.asp',
+                        }
+                    desc:
+                      type: array
+                      example:
+                        {
+                          'paragraph': 'Comments can be used to explain Python code. Comments can be used to make the code more readable. Comments can be used to prevent execution when testing code.',
+                        }
+                tags:
+                  type: array
+                  example:
+                    [
+                      'Python',
+                      'comments',
+                      'singleline',
+                      'multiline',
+                      'documentation',
+                    ]
 
     '500':
       description: Internal Server Error

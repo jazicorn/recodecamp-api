@@ -10,47 +10,49 @@ get:
         application/json:
           schema:
             type: array
-            properties:
-              id:
-                type: integer
-                example: 1
-              category:
-                type: array
-                example: ['comments', 'comments/all']
-              subCategories:
-                type: object
-                properties:
-                  singleLine:
-                    type: array
-                    example: ['comments/single/all']
-                  multiLine:
-                    type: array
-                    example: ['comments/multi/all']
-              info:
-                type: object
-                properties:
-                  sources:
-                    type: array
-                    example:
-                      {
-                        'w3schools': https://www.w3schools.com/js/js_comments.asp",
-                      }
-                  desc:
-                    type: array
-                    example:
-                      {
-                        'paragraph': 'JavaScript comments can be used to explain JavaScript code, and to make it more readable. JavaScript comments can also be used to prevent execution, when testing alternative code.',
-                      }
-              tags:
-                type: array
-                example:
-                  [
-                    'Javascript',
-                    'comments',
-                    'singleline',
-                    'multiline',
-                    'documentation',
-                  ]
+            subject:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  example: 1
+                category:
+                  type: array
+                  example: ['comments', 'comments/all']
+                subCategories:
+                  type: object
+                  properties:
+                    singleLine:
+                      type: array
+                      example: ['comments/single/all']
+                    multiLine:
+                      type: array
+                      example: ['comments/multi/all']
+                info:
+                  type: object
+                  properties:
+                    sources:
+                      type: array
+                      example:
+                        {
+                          'w3schools': https://www.w3schools.com/js/js_comments.asp",
+                        }
+                    desc:
+                      type: array
+                      example:
+                        {
+                          'paragraph': 'JavaScript comments can be used to explain JavaScript code, and to make it more readable. JavaScript comments can also be used to prevent execution, when testing alternative code.',
+                        }
+                tags:
+                  type: array
+                  example:
+                    [
+                      'Javascript',
+                      'comments',
+                      'singleline',
+                      'multiline',
+                      'documentation',
+                    ]
 
     '500':
       description: Internal Server Error
