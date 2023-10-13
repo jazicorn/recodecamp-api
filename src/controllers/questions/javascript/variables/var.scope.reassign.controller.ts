@@ -8,7 +8,7 @@ import { getRandomInt } from '../../../../utils/index';
 import { objBlockScopeReassign } from '../../../../data/javascript/javascript.var.scope.reassign';
 
 export default class VarScopeReassign {
-    public pathVarReassignBlock = '/javascript/var/scope/reassign/block';
+    public pathVarReassignBlock = '/js/var/scope/reassign/block';
     public router = Router();
     constructor() {
         this.initializeRoutes();

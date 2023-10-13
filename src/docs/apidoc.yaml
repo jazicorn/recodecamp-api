@@ -21,17 +21,17 @@ components:
 paths:
   /:
     $ref: 'src/docs/paths/index.docs.yaml'
-  /categories/javascript:
+  /categories/js:
     $ref: 'src/docs/paths/categories/javascript.docs.yaml'
   /categories/java:
     $ref: 'src/docs/paths/categories/java.docs.yaml'
-  /categories/python:
+  /categories/py:
     $ref: 'src/docs/paths/categories/python.docs.yaml'
-  /javascript/var/declare/all:
+  /js/var/declare/all:
     $ref: 'src/docs/paths/langs/javascript/js-var-declare-all.docs.yaml'
-  /javascript/var/declare/var:
+  /js/var/declare/var:
     $ref: 'src/docs/paths/langs/javascript/js-var-declare-var.docs.yaml'
-  /javascript/var/declare/const:
+  /js/var/declare/const:
     $ref: 'src/docs/paths/langs/javascript/js-var-declare-const.docs.yaml'
-  /javascript/var/declare/let:
+  /js/var/declare/let:
     $ref: 'src/docs/paths/langs/javascript/js-var-declare-let.docs.yaml'

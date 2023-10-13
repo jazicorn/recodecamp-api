@@ -8,10 +8,10 @@ import { getRandomInt } from '../../../../utils/index';
 import { objRandom, objRandomVar, objRandomConst, objRandomLet } from '../../../../data/javascript/javascript.var.declare'
 
 export default class VarDeclare {
-    public pathVarRandomDeclare = '/javascript/var/declare/all'
-    public pathVarDeclareVar = '/javascript/var/declare/var';
-    public pathVarDeclareConst = '/javascript/var/declare/const';
-    public pathVarDeclareLet = '/javascript/var/declare/let';
+    public pathVarRandomDeclare = '/js/var/declare/all'
+    public pathVarDeclareVar = '/js/var/declare/var';
+    public pathVarDeclareConst = '/js/var/declare/const';
+    public pathVarDeclareLet = '/js/var/declare/let';
     public router = Router();
     constructor() {
         this.initializeRoutes();

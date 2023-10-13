@@ -8,10 +8,10 @@ import { getRandomInt } from '../../../../utils/index';
 import { objBlockScope, objFuncScope, objGlobalScope } from '../../../../data/javascript/javascript.var.scope';
 
 export default class VarScope {
-    public pathVarRandomScope = '/javascript/var/scope/all';
-    public pathVarScopeBlock = '/javascript/var/scope/block';
-    public pathVarScopeFunc = '/javascript/var/scope/func';
-    public pathVarScopeGlobal = '/javascript/var/scope/global';
+    public pathVarRandomScope = '/js/var/scope/all';
+    public pathVarScopeBlock = '/js/var/scope/block';
+    public pathVarScopeFunc = '/js/var/scope/func';
+    public pathVarScopeGlobal = '/js/var/scope/global';
     public router = Router();
     constructor() {
         this.initializeRoutes();

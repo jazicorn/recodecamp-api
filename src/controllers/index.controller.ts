@@ -56,11 +56,11 @@ class Index {
             case('GET'):
                 try {
                     switch(req.params.id.toLowerCase()) {
-                        case('javascript'):
+                        case('js'):
                             return res.status(200).send({ data: _ROUTES_JAVASCRIPT });
                         case('java'):
                             return res.status(200).send({ data: _ROUTES_JAVA });
-                        case('python'):
+                        case('py'):
                             return res.status(200).send({ data: _ROUTES_PYTHON });
                         default:
                             return res.status(200).send({ data: _ROUTES_JAVASCRIPT });

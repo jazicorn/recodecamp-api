@@ -8,9 +8,9 @@ import { getRandomInt } from '../../../utils/index';
 import { objSingle as objSinglePy, objMulti as objMultiPy } from '../../../data/python/python.comments';
 
 export default class VarDeclare {
-    public pathCommentsRandom = '/python/comments/all';
-    public pathCommentsSingle = '/python/comments/single/all';
-    public pathCommentsMulti = '/python/comments/multi/all';
+    public pathCommentsRandom = '/py/comments/all';
+    public pathCommentsSingle = '/py/comments/single/all';
+    public pathCommentsMulti = '/py/comments/multi/all';
     public router = Router();
     constructor() {
         this.initializeRoutes();
