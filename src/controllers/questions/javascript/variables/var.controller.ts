@@ -13,17 +13,17 @@ import cors from 'cors';
 
 export default class VarGeneral {
     /**Public: Get random var */
-    public pathRandom = '/javascript/var/all';
+    public pathRandom = '/js/var/all';
     /**Public: Get All Var Category Questions*/
-    public pathVar = '/javascript/var';
+    public pathVar = '/js/var';
     /**Public: Get Var Category Question by ID*/
-    public pathVarId = '/javascript/var/get/:id';
+    public pathVarId = '/js/var/get/:id';
     /**Private: Create Var Question*/
-    public pathVarNew = '/javascript/var/new';
+    public pathVarNew = '/js/var/new';
     /**Private: Update Var Question*/
-    public pathVarUpdate = '/javascript/var/update/:id';
+    public pathVarUpdate = '/js/var/update/:id';
     /**Private: Delete Var Question';*/
-    public pathVarDelete = '/javascript/var/delete/:id';
+    public pathVarDelete = '/js/var/delete/:id';
     /**Express Router */
     public router = Router();
     /**Cors Options*/

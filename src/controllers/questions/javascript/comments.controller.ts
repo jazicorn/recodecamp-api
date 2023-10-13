@@ -8,9 +8,9 @@ import { getRandomInt } from '../../../utils/index';
 import { objSingle as objSingleJs, objMulti as objMultiJs } from '../../../data/javascript/javascript.comments';
 
 export default class VarDeclare {
-    public pathCommentsRandom = '/javascript/comments/all';
-    public pathCommentsSingle = '/javascript/comments/single/all';
-    public pathCommentsMulti = '/javascript/comments/multi/all';
+    public pathCommentsRandom = '/js/comments/all';
+    public pathCommentsSingle = '/js/comments/single/all';
+    public pathCommentsMulti = '/js/comments/multi/all';
     public router = Router();
     constructor() {
         this.initializeRoutes();

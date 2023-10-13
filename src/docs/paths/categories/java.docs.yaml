@@ -9,50 +9,7 @@ get:
       content:
         application/json:
           schema:
-            type: array
-            items:
-              type: object
-              properties:
-                id:
-                  type: integer
-                category:
-                  type: array
-                  items:
-                    type: string
-                subCategories:
-                  type: object
-                  properties:
-                    singleLine:
-                      type: array
-                      items:
-                        type: string
-                    multiLine:
-                      type: array
-                      items:
-                        type: string
-                info:
-                  type: object
-                  properties:
-                    sources:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          site:
-                            type: string
-                          link:
-                            type: string
-                    desc:
-                      type: object
-                      properties:
-                        strFormat:
-                          type: string
-                        strInfo:
-                          type: string
-                tags:
-                  type: array
-                  items:
-                    type: string
+            $ref: '../../models/category.schema.yaml'
 
     '500':
       description: Internal Server Error
