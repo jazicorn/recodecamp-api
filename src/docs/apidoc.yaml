@@ -5,7 +5,7 @@ info:
   description: API Documentation for recodecamp
   termsOfService: https://recodecamp-web.vercel.app/terms
   contact:
-    name: Jazicorn
+    name: jazicorn
     email: jazicorndev@gmail.com
     url: https://github.com/jazicorn/
   license:
@@ -14,6 +14,10 @@ info:
 servers:
   - url: https://recodecamp-api.vercel.app
     description: Production Server
+components:
+  schemas:
+    Category:
+      $ref: 'src/docs/models/category.schema.yaml'
 paths:
   /:
     $ref: 'src/docs/paths/index.docs.yaml'
