@@ -3,7 +3,7 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 export const verifyToken = (req, res, next) => {
-  const token = req.cookies_ACCESS_TOKEN;
+  const token = req.cookies._ACCESS_TOKEN;
 
   if (!token) {
     return res.status(403).send("A token is required for authentication");
