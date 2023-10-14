@@ -22,7 +22,7 @@ class Guest_Routes {
     /**Public: Validate Guest*/
     public pathGuestLogout = '/guest/logout';
     /**Public: Auth guest*/
-    public pathGuestAuth = '/guest/verify';
+    public pathGuestAuth = '/guest/auth/me';
     /**Express Router*/
     public router = Router();
     /**Cors Options*/
@@ -327,7 +327,7 @@ class Guest_Routes {
                     const guestObj = new Guest(guestResult);
                     //console.log("guest:", guestObj);
                     const result = { authenticated: true, data: guestObj }
-                    res.status(200).json(result);
+                    return res.status(200).json(result);
                 }
                 catch (err) {
                     return res.status(500).send({ error: "Guest Not Found"});
