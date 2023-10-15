@@ -22,7 +22,9 @@ class Guest_Routes {
     /**Public: Validate Guest*/
     public pathGuestLogout = '/guest/logout';
     /**Public: Auth guest*/
-    public pathGuestAuth = '/guest/auth/me';
+    public pathGuestAuthMe = '/guest/auth/me';
+    /**Public: Auth guest*/
+    public pathGuestVerify = '/guest/verify';
     /**Express Router*/
     public router = Router();
     /**Cors Options*/
@@ -40,7 +42,8 @@ class Guest_Routes {
         this.router.post(this.pathGuestLogin, this.guestLogin);
         this.router.delete(this.pathGuestLogout, auth, this.guestLogout);
         this.router.delete(this.pathGuestDelete, auth, this.guestDelete);
-        this.router.get(this.pathGuestAuth, auth, this.guestAuth);
+        this.router.get(this.pathGuestAuthMe, auth, this.guestAuthMe);
+        this.router.get(this.pathGuestVerify, auth, this.guestVerify);
     }
 
 
@@ -231,7 +234,11 @@ class Guest_Routes {
     public guestLogout = async (req: Request, res: Response) => {
         switch(req.method) {
             case('DELETE'):
-                return res.clearCookie("_ACCESS_TOKEN").sendStatus(200);
+                return res.clearCookie("_ACCESS_TOKEN", {
+                    httpOnly: true,
+                    secure: true,
+                    sameSite: 'strict',
+                }).sendStatus(200);
                 break
             default:
                 return res.status(400).send({ error: `${req.method} Method Not Allowed` });
@@ -288,7 +295,11 @@ class Guest_Routes {
                     //console.log(id)
                     const result = await sql`DELETE FROM _GUEST WHERE _id = ${id}`;
                     //console.log(result);
-                    return res.clearCookie("_ACCESS_TOKEN").sendStatus(200);
+                    return res.clearCookie("_ACCESS_TOKEN", {
+                        httpOnly: true,
+                        secure: true,
+                        sameSite: 'strict',
+                    }).sendStatus(200);
                 } catch {
                     return res.status(500).send({ error: "Guest Not Found"});
                 }
@@ -298,7 +309,40 @@ class Guest_Routes {
         };
     };
     /**Public: Auth Guest*/
-    public guestAuth = async (req: Request, res: Response) => {
+    public guestAuthMe = async (req: Request, res: Response) => {
+        switch(req.method) {
+            case('GET'):
+                try {
+                    /**token */
+                    const token = req.cookies._ACCESS_TOKEN;
+                    //console.log("token:", token)
+                    /**jwt token */
+                    const decoded = jwt.verify(token, process.env.SECRET_TOKEN);
+                    //console.log("decoded:", decoded)
+
+                    if (!decoded) {
+                        const result = { authenticated: false, data: {} }
+                        return res.status(400).json(result);
+                    }
+
+                    const tokenObj = {
+                        _ID: decoded._ID,
+                        _EMAIL: decoded._EMAIL
+                    }
+
+                    const result = { authenticated: true, data: tokenObj }
+                    return res.status(200).json(result);
+                }
+                catch (err) {
+                    return res.status(500).send({ error: "Guest Not Found"});
+                }
+                break
+            default:
+                return res.status(400).send({ error: `${req.method} Method Not Allowed` });
+        }
+    }
+    /**Public: Auth Guest*/
+    public guestVerify = async (req: Request, res: Response) => {
         switch(req.method) {
             case('GET'):
                 try {
@@ -313,7 +357,7 @@ class Guest_Routes {
                     const getGuest = await sql`SELECT * FROM _GUEST WHERE _ID = ${decoded._ID}`;
                     const guestResult = getGuest[0];
                     //console.log("guest:", guestResult);
-                    if (!guestResult) {
+                    if (!guestResult || !decoded) {
                         const result = { authenticated: false, data: {} }
                         return res.status(400).json(result);
                     }
