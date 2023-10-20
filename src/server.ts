@@ -7,6 +7,15 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import * as dotenv from 'dotenv';
 dotenv.config();
+const { DATABASE_URL, DATABASE_ENV } = process.env;
+
+if( DATABASE_ENV === "Production") {
+    console.log(`---\n🔄 Production Server Loading...\n---`);
+} else if( DATABASE_ENV === "staging") {
+    console.log(`---\n🔄 Staging Server Loading...\n---`);
+} else {
+    console.log(`---\n🔄 Development Server Loading...\n---`);
+}
 
 class App {
     public app: Application;
@@ -66,9 +75,19 @@ class App {
 
     public listen() {
         this.app.listen(this.port, "0.0.0.0", (): void => {
-            console.log(
-                `Server Running here 👉 http://localhost:${this.port}`
-            );
+            if( DATABASE_ENV === "Production") {
+                console.log(
+                    `🏃🏿‍♀️ Production Server Running Here 👉 http://localhost:${this.port}\n---`
+                );
+            } else if( DATABASE_ENV === "staging") {
+                console.log(
+                    `🏃🏿‍♀️ Staging Server Running Here 👉 http://localhost:${this.port}\n---`
+                );
+            } else {
+                console.log(
+                    `🏃🏿‍♀️ Development Server Running Here 👉 http://localhost:${this.port}\n---`
+                );
+            }
         });
     }
 }

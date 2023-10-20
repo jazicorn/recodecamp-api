@@ -10,6 +10,10 @@ import pythonComments from './controllers/questions/python/comments.controller';
 import VarDeclare from './controllers/questions/javascript/variables/var.declare.controller';
 import VarScope from './controllers/questions/javascript/variables/var.scope.controller';
 import VarScopeReassign from './controllers/questions/javascript/variables/var.scope.reassign.controller';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
+const { DATABASE_URL, DATABASE_ENV } = process.env;
 
 const app = new App(
     [],

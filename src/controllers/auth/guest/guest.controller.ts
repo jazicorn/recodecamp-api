@@ -13,17 +13,17 @@ import auth from '../../../middleware/auth';
 dotenv.config();
 
 class Guest_Routes {
-    /**Public: Guest Delete Routes*/
-    public pathGuestDelete = '/guest/delete/:id';
+    /**Public: Delete Guest */
+    public pathGuestDelete = '/guest/delete';
     /**Public: Create Guest*/
     public pathGuestNew = '/guest/new';
-    /**Public: Validate Guest*/
+    /**Public: Login Guest*/
     public pathGuestLogin = '/guest/login';
-    /**Public: Validate Guest*/
+    /**Public: Logout Guest*/
     public pathGuestLogout = '/guest/logout';
-    /**Public: Auth guest*/
+    /**Public: Auth Guest*/
     public pathGuestAuthMe = '/guest/auth/me';
-    /**Public: Auth guest*/
+    /**Public: Auth Guest + Retrieve Data*/
     public pathGuestVerify = '/guest/verify';
     /**Express Router*/
     public router = Router();
@@ -63,6 +63,7 @@ class Guest_Routes {
                     const validPasswordRegex = z.string().regex(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$,;%^*-]).{8,16}$/,data._PASSWORD);
                     //console.log('validIP', validIP);
                     //console.log('validEmail', validEmail);
+
                     if(!validIP) {
                         return res.status(400).send({ error: "Guest Network Error" });
                     } else if(!validEmail) {
@@ -134,7 +135,7 @@ class Guest_Routes {
                         const getGuest = await sql`SELECT * FROM _GUEST WHERE _ID = ${guest._ID}`;
                         //console.log("guest info:", getGuest);
                         if(getGuest !== undefined) {
-                            return res.sendStatus(200);
+                            return res.status(200).send({ data: {}});
                         } else {
                             return res.status(500).send({ error: "Guest Creation Error" });
                         }
@@ -238,7 +239,7 @@ class Guest_Routes {
                     httpOnly: true,
                     secure: true,
                     sameSite: 'strict',
-                }).sendStatus(200);
+                }).status(200).send({ data: {}});
                 break
             default:
                 return res.status(400).send({ error: `${req.method} Method Not Allowed` });
@@ -258,23 +259,24 @@ class Guest_Routes {
                     //console.log("decoded:", decoded)
                     /** <-- Validate User Info --> */
                     const data = req.body;
+                    //console.log(data)
+
+                    /**Validate user === token */
+                    if( decoded._EMAIL !== data._EMAIL ) {
+                        return res.status(403).send({ error: "Valid token is required for account deletion"});
+                    }
 
                     /**Retrieve Guest */
                     // Check Email in database
                     const getGuest = await sql`SELECT * FROM _GUEST WHERE _EMAIL = ${data._EMAIL}`;
                     const guestResult = getGuest[0];
                     //console.log("guestResult:", guestResult)
-                    /**Validate user === token */
-                    if(decoded._EMAIL !==  guestResult._email) {
-                        return res.status(403).send("Valid token is required for account deletion");
-                    }
+
                     /**Validate Guest Data */
                     // Check Guest IP Address
                     const guestIP = req.socket.remoteAddress;
                     const validIP = z.string().ip(guestIP);
-                    // Check Email & Password
-                    //const validEmail = data._EMAIL === guestResult._email;
-                    //console.log("validEmail", validEmail);
+
                     // Compare Encrypted Password
                     const validPasswordCompare = bcrypt.compareSync(
                         data._PASSWORD,
@@ -287,19 +289,17 @@ class Guest_Routes {
                         return res.status(400).send({ error: "Invalid IP Address" })
                     }
                     if(!validPasswordCompare) {
-                        return res.status(400).send({ error: "Invalid Password" })
+                        return res.status(401).send({ error: "Invalid Password" })
                     }
 
-                    /**Delete Guest */
-                    const id = req.params.id;
                     //console.log(id)
-                    const result = await sql`DELETE FROM _GUEST WHERE _id = ${id}`;
+                    const result = await sql`DELETE FROM _GUEST WHERE _EMAIL = ${data._EMAIL}`;
                     //console.log(result);
                     return res.clearCookie("_ACCESS_TOKEN", {
                         httpOnly: true,
                         secure: true,
                         sameSite: 'strict',
-                    }).sendStatus(200);
+                    }).status(200).send({ data: {}});
                 } catch {
                     return res.status(500).send({ error: "Guest Not Found"});
                 }
@@ -321,8 +321,8 @@ class Guest_Routes {
                     //console.log("decoded:", decoded)
 
                     if (!decoded) {
-                        const result = { authenticated: false, data: {} }
-                        return res.status(400).json(result);
+                        const result = { data: {} }
+                        return res.status(403).json(result);
                     }
 
                     const tokenObj = {
@@ -330,11 +330,11 @@ class Guest_Routes {
                         _EMAIL: decoded._EMAIL
                     }
 
-                    const result = { authenticated: true, data: tokenObj }
+                    const result = { data: tokenObj }
                     return res.status(200).json(result);
                 }
                 catch (err) {
-                    return res.status(500).send({ error: "Guest Not Found"});
+                    return res.status(404).send({ error: "Guest Not Found"});
                 }
                 break
             default:
@@ -357,9 +357,13 @@ class Guest_Routes {
                     const getGuest = await sql`SELECT * FROM _GUEST WHERE _ID = ${decoded._ID}`;
                     const guestResult = getGuest[0];
                     //console.log("guest:", guestResult);
-                    if (!guestResult || !decoded) {
-                        const result = { authenticated: false, data: {} }
-                        return res.status(400).json(result);
+                    if (!decoded) {
+                        const result = { data: {} }
+                        return res.status(403).json(result);
+                    }
+                    if (!guestResult) {
+                        const result = { data: {} }
+                        return res.status(404).send({ error: "Guest Not Found"});
                     }
                     /**Transform Data */
                     // uppercase guestResult keys
@@ -370,11 +374,11 @@ class Guest_Routes {
                     // Create Guest Object
                     const guestObj = new Guest(guestResult);
                     //console.log("guest:", guestObj);
-                    const result = { authenticated: true, data: guestObj }
+                    const result = { data: guestObj }
                     return res.status(200).json(result);
                 }
                 catch (err) {
-                    return res.status(500).send({ error: "Guest Not Found"});
+                    return res.status(400).send({ error: "Request Error"});
                 }
                 break
             default:
