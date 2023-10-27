@@ -1,6 +1,7 @@
 'use strict';
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 import App from './server';
+import Email from './controllers/email.controller';
 import Index from './controllers/index.controller';
 import guestRoutes from './controllers/auth/guest/guest.controller';
 import jsComments from './controllers/questions/javascript/comments.controller';
@@ -16,6 +17,9 @@ dotenv.config();
 const { DATABASE_URL, DATABASE_ENV } = process.env;
 
 const app = new App(
+    [
+        new Email(),
+    ],
     [],
     [
         new Index(),
