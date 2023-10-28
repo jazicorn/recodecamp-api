@@ -42,6 +42,7 @@ class App {
         this.app.use(bodyParser.json());
         // for parsing multipart/form-data
         this.app.use(express.static(__dirname + "/public"));
+        this.app.use(express.static(__dirname + "/templates/static"));
         // for parsing cookies
         this.app.use(cookieParser());
         this.app.use(cors({

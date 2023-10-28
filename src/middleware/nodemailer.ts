@@ -1,15 +1,12 @@
 // Article | https://unclebigbay.com/build-an-email-application-using-node-js-express-js-with-gmail-and-nodemailer-all-in-one-article
 import * as dotenv from 'dotenv';
 dotenv.config();
-
 // Nodemailer
 import nodemailer from "nodemailer";
-
 // Googleapis
 import { google } from "googleapis";
 // Pull out OAuth from googleapis
 const OAuth2 = google.auth.OAuth2;
-
 // Import multer
 import multer from "multer";
 

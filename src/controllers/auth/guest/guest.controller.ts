@@ -1,15 +1,16 @@
 import { Request, Response } from 'express';
 import Router from 'express-promise-router';
-import { Guest } from '../../../classes/guest';
-import { _Guest } from  '../../../types/types.guest';
-import sql from '../../../config/db';
+import axios from "axios";
 import cors from 'cors';
 import { z } from "zod";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import * as dotenv from 'dotenv';
+import { v4 as uuidv4 } from 'uuid';
+import { Guest } from '../../../classes/guest';
+import { _Guest } from  '../../../types/types.guest';
+import sql from '../../../config/db';
 import auth from '../../../middleware/auth';
-
+import * as dotenv from 'dotenv';
 dotenv.config();
 
 class Guest_Routes {
@@ -89,27 +90,27 @@ class Guest_Routes {
                         // guest after updates
                         //console.log("guest", guest);
                         const createGuest = await sql`INSERT INTO _GUEST(
-                        _ID,
-                        _CREATED_AT,
-                        _UPDATED_AT,
-                        _ACCESS_TOKEN,
-                        _FIRST_LOGIN,
-                        _ADMIN,
-                        _SUBSCRIPTION,
-                        _IP_ADDRESS,
-                        _PASSCODE,
-                        _PASSCODE_CONFIRMED,
-                        _EMAIL,
-                        _EMAIL_CONFIRMED,
-                        _EMAIL_PASSCODE,
-                        _PASSWORD,
-                        _DEFAULT_LANGUAGE,
-                        _DEFAULT_ROUTE,
-                        _POINTS_TOTAL,
-                        _POINTS_JAVASCRIPT,
-                        _POINTS_JAVA,
-                        _POINTS_PYTHON,
-                        _COURSES
+                            _ID,
+                            _CREATED_AT,
+                            _UPDATED_AT,
+                            _ACCESS_TOKEN,
+                            _FIRST_LOGIN,
+                            _ADMIN,
+                            _SUBSCRIPTION,
+                            _IP_ADDRESS,
+                            _PASSCODE,
+                            _PASSCODE_CONFIRMED,
+                            _EMAIL,
+                            _EMAIL_CONFIRMED,
+                            _EMAIL_PASSCODE,
+                            _PASSWORD,
+                            _DEFAULT_LANGUAGE,
+                            _DEFAULT_ROUTE,
+                            _POINTS_TOTAL,
+                            _POINTS_JAVASCRIPT,
+                            _POINTS_JAVA,
+                            _POINTS_PYTHON,
+                            _COURSES
                         ) VALUES (
                             ${guest._ID},
                             ${guest._CREATED_AT},
@@ -133,9 +134,15 @@ class Guest_Routes {
                             ${guest._POINTS_PYTHON},
                             ${guest._COURSES})`;
                         const getGuest = await sql`SELECT * FROM _GUEST WHERE _ID = ${guest._ID}`;
-                        //console.log("guest info:", getGuest);
+                        const getGuestResult = getGuest[0];
+                        //console.log("guest info:", getGuest[0]);
                         if(getGuest !== undefined) {
-                            return res.status(200).send({ data: {}});
+                            const user = {
+                                email: getGuestResult._email,
+                                passcode: getGuestResult._passcode,
+                            };
+                            //console.log("user:", user);
+                            return res.status(200).send(user);
                         } else {
                             return res.status(500).send({ error: "Guest Creation Error" });
                         }
@@ -162,12 +169,22 @@ class Guest_Routes {
                     // Check Email in database
                     const getGuest = await sql`SELECT * FROM _GUEST WHERE _EMAIL = ${data._EMAIL}`;
                     const guestResult = getGuest[0];
-                    //console.log("guestResult:", guestResult)
+                    //console.log("guestResult:", guestResult);
 
                     /**Validate Guest Data */
                     // Check Guest IP Address
                     const guestIP = req.socket.remoteAddress;
                     const validIP = z.string().ip(guestIP);
+
+                    if(!validIP) {
+                        return res.status(400).send({ error: "User Invalid IP Address" });
+                    };
+
+                    /**Check if Passcode Confirmed */
+                    if(guestResult._passcode_confirmed === false) {
+                        return res.status(400).send({ error: "Account Not Confirmed" });
+                    }
+
                     // Check Email & Password
                     const validEmail = data._EMAIL === guestResult._email;
                     //console.log("validEmail", validEmail);
@@ -177,6 +194,9 @@ class Guest_Routes {
                         guestResult._password
                     );
                     //console.log("validPasswordCompare:", validPasswordCompare);
+                    if(!validEmail || !validPasswordCompare) {
+                        return res.status(400).send({ error: "Invalid Guest Information" });
+                    };
 
                     /**Transform Data */
                     // uppercase guestResult keys
@@ -209,19 +229,12 @@ class Guest_Routes {
 
                     //console.log("guestObj:", guestObj)
 
-                    if(!validIP) {
-                        return res.status(400).send({ error: "User Network Error" });
-                    } else if(!validEmail || !validPasswordCompare) {
-                        return res.status(400).send({ error: "Invalid Guest Information" });
-                    } else if(validIP && validEmail && validPasswordCompare) {
-                        return res.cookie("_ACCESS_TOKEN", getToken, {
-                            httpOnly: true,
-                            secure: true,
-                            sameSite: 'strict',
-                        }).status(200).send({data: guestObj});
-                    } else {
-                        return res.status(400).send({ error: "Invalid Data" });
-                    }
+                    return res.cookie("_ACCESS_TOKEN", getToken, {
+                        httpOnly: true,
+                        secure: true,
+                        sameSite: 'strict',
+                    }).status(200).send({data: guestObj});
+
                 } catch {
                     return res.status(500).send({ error: "Database Connection Error" });
                 }

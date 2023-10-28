@@ -1,9 +1,10 @@
 'use strict';
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 import App from './server';
-import Email from './controllers/email.controller';
+import Views from './controllers/email.controller';
 import Index from './controllers/index.controller';
 import guestRoutes from './controllers/auth/guest/guest.controller';
+import guestRoutesPasscodes from './controllers/auth/guest/guest.passcodes.controller';
 import jsComments from './controllers/questions/javascript/comments.controller';
 import javaComments from './controllers/questions/java/comments.controller';
 import pythonComments from './controllers/questions/python/comments.controller';
@@ -18,12 +19,13 @@ const { DATABASE_URL, DATABASE_ENV } = process.env;
 
 const app = new App(
     [
-        new Email(),
+        new Views(),
     ],
     [],
     [
         new Index(),
         new guestRoutes(),
+        new guestRoutesPasscodes(),
         new jsComments(),
         new javaComments(),
         new pythonComments(),

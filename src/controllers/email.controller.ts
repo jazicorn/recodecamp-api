@@ -3,7 +3,7 @@ import Router from 'express-promise-router';
 import path from 'path';
 import multer from 'multer';
 import fs from 'fs';
-import { createTransporter, attachmentUpload, Storage } from '../middleware/googleAuth';
+import { createTransporter, attachmentUpload, Storage } from '../middleware/nodemailer';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
