@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="./favicon.svg">
+    <!-- Css styles -->
+    <link rel="stylesheet" href="./index.css" />
+    <!-- Fontawesome icon library -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <title>E-mail Sender Application</title>
+  </head>
+  <body>
+    <form
+      action="/email/send"
+      method="POST"
+    >
+      <h2>E-mail Sender Application</h2>
+      <div class="input-wrapper">
+        <i class="fa fa-user icon"></i>
+        <input
+          class="input-field"
+          type="text"
+          placeholder="To: i.e support@recodecamp.com"
+          name="email"
+          autocomplete="off"
+          required
+        />
+      </div>
+      <div class="input-wrapper">
+        <i class="fa fa-envelope icon"></i>
+
+        <input
+          class="input-field"
+          type="text"
+          placeholder="Subject"
+          name="subject"
+          required
+        />
+      </div>
+
+      <div class="input-wrapper">
+        <textarea
+          id="message"
+          name="message"
+          placeholder="Message body.."
+          required
+        ></textarea>
+      </div>
+
+      <button type="submit" class="send-btn">Send Mail</button>
+    </form>
+  </body>
+</html>
