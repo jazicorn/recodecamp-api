@@ -30,14 +30,17 @@ class App {
     constructor(publicControllers, authControllers, controllers) {
         this.app = express();
         this.port = parseInt(process.env.PORT as string) || 8000;
+        this.corsOptions = process.env.CORS_URLS;
         this.initMiddlewares();
         this.initPublicControllers(publicControllers);
         this.initAuthControllers(authControllers);
         this.initControllers(controllers);
-        this.corsOptions = process.env.CORS_URLS;
     }
 
     private initMiddlewares() {
+        this.app.use(cors({
+            origin: this.corsOptions
+        }));
         // for parsing application/json
         this.app.use(bodyParser.json());
         // for parsing multipart/form-data
@@ -45,9 +48,7 @@ class App {
         this.app.use(express.static(__dirname + "/templates/static"));
         // for parsing cookies
         this.app.use(cookieParser());
-        this.app.use(cors({
-            origin: this.corsOptions
-        }));
+
         this.app.use( (req, res, next) => {
             res.header("Access-Control-Allow-Origin", "*");
             res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
