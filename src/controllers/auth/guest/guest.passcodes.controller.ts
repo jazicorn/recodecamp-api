@@ -5,7 +5,7 @@ import { z } from "zod";
 import path from 'path';
 import multer from 'multer';
 import fs from 'fs';
-import nodemailer from 'nodemailer';
+const nodemailer = require("nodemailer");
 import { v4 as uuidv4 } from 'uuid';
 import { Guest } from '../../../classes/guest';
 import { _Guest } from  '../../../types/types.guest';
@@ -13,7 +13,6 @@ import sql from '../../../config/db';
 import { createTransporter, attachmentUpload, Storage } from '../../../middleware/nodemailer';
 import { createEmailHtml } from '../../../templates/_email';
 import { accountValidation, mailOptionsAccountValidation } from '../../../templates/accountValidation';
-import { accountWelcome } from '../../../templates/accountWelcome';
 import * as dotenv from 'dotenv';
 dotenv.config();
 

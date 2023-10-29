@@ -1,5 +1,3 @@
-import { Question } from './types.question'
-
 export interface _Guest {
     _ID: string;
     _CREATED_AT: Date;
@@ -30,7 +28,7 @@ export type Course = {
     _COURSE_UPDATED_AT: Date;
     _COURSE_COMPLETED_AT: Date | null;
     _COURSE_SUBJECT: string;
-    _COURSE_ITEMS: Question[] | null;
+    _COURSE_ITEMS: number[] | string[] | null;
     _COURSE_COMPLETE: boolean;
     _COURSE_POINTS: number;
 };
