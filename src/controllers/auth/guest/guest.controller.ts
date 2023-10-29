@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import Router from 'express-promise-router';
-import axios from "axios";
 import cors from 'cors';
 import { z } from "zod";
 import jwt from "jsonwebtoken";
