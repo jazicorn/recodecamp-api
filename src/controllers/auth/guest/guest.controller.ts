@@ -1,28 +1,31 @@
 import { Request, Response } from 'express';
 import Router from 'express-promise-router';
-import { Guest } from '../../../classes/guest';
-import { _Guest } from  '../../../types/types.guest';
-import sql from '../../../config/db';
+import axios from "axios";
 import cors from 'cors';
 import { z } from "zod";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import * as dotenv from 'dotenv';
+import { v4 as uuidv4 } from 'uuid';
+import { Guest } from '../../../classes/guest';
+import { _Guest } from  '../../../types/types.guest';
+import sql from '../../../config/db';
 import auth from '../../../middleware/auth';
-
+import * as dotenv from 'dotenv';
 dotenv.config();
 
 class Guest_Routes {
-    /**Public: Guest Delete Routes*/
-    public pathGuestDelete = '/guest/delete/:id';
+    /**Public: Delete Guest */
+    public pathGuestDelete = '/guest/delete';
     /**Public: Create Guest*/
     public pathGuestNew = '/guest/new';
-    /**Public: Validate Guest*/
+    /**Public: Login Guest*/
     public pathGuestLogin = '/guest/login';
-    /**Public: Validate Guest*/
+    /**Public: Logout Guest*/
     public pathGuestLogout = '/guest/logout';
-    /**Public: Auth guest*/
-    public pathGuestAuth = '/guest/verify';
+    /**Public: Auth Guest*/
+    public pathGuestAuthMe = '/guest/auth/me';
+    /**Public: Auth Guest + Retrieve Data*/
+    public pathGuestVerify = '/guest/verify';
     /**Express Router*/
     public router = Router();
     /**Cors Options*/
@@ -40,7 +43,8 @@ class Guest_Routes {
         this.router.post(this.pathGuestLogin, this.guestLogin);
         this.router.delete(this.pathGuestLogout, auth, this.guestLogout);
         this.router.delete(this.pathGuestDelete, auth, this.guestDelete);
-        this.router.get(this.pathGuestAuth, auth, this.guestAuth);
+        this.router.get(this.pathGuestAuthMe, auth, this.guestAuthMe);
+        this.router.get(this.pathGuestVerify, auth, this.guestVerify);
     }
 
 
@@ -60,6 +64,7 @@ class Guest_Routes {
                     const validPasswordRegex = z.string().regex(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$,;%^*-]).{8,16}$/,data._PASSWORD);
                     //console.log('validIP', validIP);
                     //console.log('validEmail', validEmail);
+
                     if(!validIP) {
                         return res.status(400).send({ error: "Guest Network Error" });
                     } else if(!validEmail) {
@@ -85,27 +90,27 @@ class Guest_Routes {
                         // guest after updates
                         //console.log("guest", guest);
                         const createGuest = await sql`INSERT INTO _GUEST(
-                        _ID,
-                        _CREATED_AT,
-                        _UPDATED_AT,
-                        _ACCESS_TOKEN,
-                        _FIRST_LOGIN,
-                        _ADMIN,
-                        _SUBSCRIPTION,
-                        _IP_ADDRESS,
-                        _PASSCODE,
-                        _PASSCODE_CONFIRMED,
-                        _EMAIL,
-                        _EMAIL_CONFIRMED,
-                        _EMAIL_PASSCODE,
-                        _PASSWORD,
-                        _DEFAULT_LANGUAGE,
-                        _DEFAULT_ROUTE,
-                        _POINTS_TOTAL,
-                        _POINTS_JAVASCRIPT,
-                        _POINTS_JAVA,
-                        _POINTS_PYTHON,
-                        _COURSES
+                            _ID,
+                            _CREATED_AT,
+                            _UPDATED_AT,
+                            _ACCESS_TOKEN,
+                            _FIRST_LOGIN,
+                            _ADMIN,
+                            _SUBSCRIPTION,
+                            _IP_ADDRESS,
+                            _PASSCODE,
+                            _PASSCODE_CONFIRMED,
+                            _EMAIL,
+                            _EMAIL_CONFIRMED,
+                            _EMAIL_PASSCODE,
+                            _PASSWORD,
+                            _DEFAULT_LANGUAGE,
+                            _DEFAULT_ROUTE,
+                            _POINTS_TOTAL,
+                            _POINTS_JAVASCRIPT,
+                            _POINTS_JAVA,
+                            _POINTS_PYTHON,
+                            _COURSES
                         ) VALUES (
                             ${guest._ID},
                             ${guest._CREATED_AT},
@@ -129,9 +134,15 @@ class Guest_Routes {
                             ${guest._POINTS_PYTHON},
                             ${guest._COURSES})`;
                         const getGuest = await sql`SELECT * FROM _GUEST WHERE _ID = ${guest._ID}`;
-                        //console.log("guest info:", getGuest);
+                        const getGuestResult = getGuest[0];
+                        //console.log("guest info:", getGuest[0]);
                         if(getGuest !== undefined) {
-                            return res.sendStatus(200);
+                            const user = {
+                                email: getGuestResult._email,
+                                passcode: getGuestResult._passcode,
+                            };
+                            //console.log("user:", user);
+                            return res.status(200).send(user);
                         } else {
                             return res.status(500).send({ error: "Guest Creation Error" });
                         }
@@ -158,12 +169,22 @@ class Guest_Routes {
                     // Check Email in database
                     const getGuest = await sql`SELECT * FROM _GUEST WHERE _EMAIL = ${data._EMAIL}`;
                     const guestResult = getGuest[0];
-                    //console.log("guestResult:", guestResult)
+                    //console.log("guestResult:", guestResult);
 
                     /**Validate Guest Data */
                     // Check Guest IP Address
                     const guestIP = req.socket.remoteAddress;
                     const validIP = z.string().ip(guestIP);
+
+                    if(!validIP) {
+                        return res.status(400).send({ error: "User Invalid IP Address" });
+                    };
+
+                    /**Check if Passcode Confirmed */
+                    if(guestResult._passcode_confirmed === false) {
+                        return res.status(400).send({ error: "Account Not Confirmed" });
+                    }
+
                     // Check Email & Password
                     const validEmail = data._EMAIL === guestResult._email;
                     //console.log("validEmail", validEmail);
@@ -173,6 +194,9 @@ class Guest_Routes {
                         guestResult._password
                     );
                     //console.log("validPasswordCompare:", validPasswordCompare);
+                    if(!validEmail || !validPasswordCompare) {
+                        return res.status(400).send({ error: "Invalid Guest Information" });
+                    };
 
                     /**Transform Data */
                     // uppercase guestResult keys
@@ -205,19 +229,12 @@ class Guest_Routes {
 
                     //console.log("guestObj:", guestObj)
 
-                    if(!validIP) {
-                        return res.status(400).send({ error: "User Network Error" });
-                    } else if(!validEmail || !validPasswordCompare) {
-                        return res.status(400).send({ error: "Invalid Guest Information" });
-                    } else if(validIP && validEmail && validPasswordCompare) {
-                        return res.cookie("_ACCESS_TOKEN", getToken, {
-                            httpOnly: true,
-                            secure: true,
-                            sameSite: 'strict',
-                        }).status(200).send({data: guestObj});
-                    } else {
-                        return res.status(400).send({ error: "Invalid Data" });
-                    }
+                    return res.cookie("_ACCESS_TOKEN", getToken, {
+                        httpOnly: true,
+                        secure: true,
+                        sameSite: 'strict',
+                    }).status(200).send({data: guestObj});
+
                 } catch {
                     return res.status(500).send({ error: "Database Connection Error" });
                 }
@@ -231,7 +248,11 @@ class Guest_Routes {
     public guestLogout = async (req: Request, res: Response) => {
         switch(req.method) {
             case('DELETE'):
-                return res.clearCookie("_ACCESS_TOKEN").sendStatus(200);
+                return res.clearCookie("_ACCESS_TOKEN", {
+                    httpOnly: true,
+                    secure: true,
+                    sameSite: 'strict',
+                }).status(200).send({ data: {}});
                 break
             default:
                 return res.status(400).send({ error: `${req.method} Method Not Allowed` });
@@ -251,23 +272,24 @@ class Guest_Routes {
                     //console.log("decoded:", decoded)
                     /** <-- Validate User Info --> */
                     const data = req.body;
+                    //console.log(data)
+
+                    /**Validate user === token */
+                    if( decoded._EMAIL !== data._EMAIL ) {
+                        return res.status(403).send({ error: "Valid token is required for account deletion"});
+                    }
 
                     /**Retrieve Guest */
                     // Check Email in database
                     const getGuest = await sql`SELECT * FROM _GUEST WHERE _EMAIL = ${data._EMAIL}`;
                     const guestResult = getGuest[0];
                     //console.log("guestResult:", guestResult)
-                    /**Validate user === token */
-                    if(decoded._EMAIL !==  guestResult._email) {
-                        return res.status(403).send("Valid token is required for account deletion");
-                    }
+
                     /**Validate Guest Data */
                     // Check Guest IP Address
                     const guestIP = req.socket.remoteAddress;
                     const validIP = z.string().ip(guestIP);
-                    // Check Email & Password
-                    //const validEmail = data._EMAIL === guestResult._email;
-                    //console.log("validEmail", validEmail);
+
                     // Compare Encrypted Password
                     const validPasswordCompare = bcrypt.compareSync(
                         data._PASSWORD,
@@ -280,15 +302,17 @@ class Guest_Routes {
                         return res.status(400).send({ error: "Invalid IP Address" })
                     }
                     if(!validPasswordCompare) {
-                        return res.status(400).send({ error: "Invalid Password" })
+                        return res.status(401).send({ error: "Invalid Password" })
                     }
 
-                    /**Delete Guest */
-                    const id = req.params.id;
                     //console.log(id)
-                    const result = await sql`DELETE FROM _GUEST WHERE _id = ${id}`;
+                    const result = await sql`DELETE FROM _GUEST WHERE _EMAIL = ${data._EMAIL}`;
                     //console.log(result);
-                    return res.clearCookie("_ACCESS_TOKEN").sendStatus(200);
+                    return res.clearCookie("_ACCESS_TOKEN", {
+                        httpOnly: true,
+                        secure: true,
+                        sameSite: 'strict',
+                    }).status(200).send({ data: {}});
                 } catch {
                     return res.status(500).send({ error: "Guest Not Found"});
                 }
@@ -298,7 +322,40 @@ class Guest_Routes {
         };
     };
     /**Public: Auth Guest*/
-    public guestAuth = async (req: Request, res: Response) => {
+    public guestAuthMe = async (req: Request, res: Response) => {
+        switch(req.method) {
+            case('GET'):
+                try {
+                    /**token */
+                    const token = req.cookies._ACCESS_TOKEN;
+                    //console.log("token:", token)
+                    /**jwt token */
+                    const decoded = jwt.verify(token, process.env.SECRET_TOKEN);
+                    //console.log("decoded:", decoded)
+
+                    if (!decoded) {
+                        const result = { data: {} }
+                        return res.status(403).json(result);
+                    }
+
+                    const tokenObj = {
+                        _ID: decoded._ID,
+                        _EMAIL: decoded._EMAIL
+                    }
+
+                    const result = { data: tokenObj }
+                    return res.status(200).json(result);
+                }
+                catch (err) {
+                    return res.status(404).send({ error: "Guest Not Found"});
+                }
+                break
+            default:
+                return res.status(400).send({ error: `${req.method} Method Not Allowed` });
+        }
+    }
+    /**Public: Auth Guest*/
+    public guestVerify = async (req: Request, res: Response) => {
         switch(req.method) {
             case('GET'):
                 try {
@@ -313,9 +370,13 @@ class Guest_Routes {
                     const getGuest = await sql`SELECT * FROM _GUEST WHERE _ID = ${decoded._ID}`;
                     const guestResult = getGuest[0];
                     //console.log("guest:", guestResult);
+                    if (!decoded) {
+                        const result = { data: {} }
+                        return res.status(403).json(result);
+                    }
                     if (!guestResult) {
-                        const result = { authenticated: false, data: {} }
-                        return res.status(400).json(result);
+                        const result = { data: {} }
+                        return res.status(404).send({ error: "Guest Not Found"});
                     }
                     /**Transform Data */
                     // uppercase guestResult keys
@@ -326,11 +387,11 @@ class Guest_Routes {
                     // Create Guest Object
                     const guestObj = new Guest(guestResult);
                     //console.log("guest:", guestObj);
-                    const result = { authenticated: true, data: guestObj }
-                    res.status(200).json(result);
+                    const result = { data: guestObj }
+                    return res.status(200).json(result);
                 }
                 catch (err) {
-                    return res.status(500).send({ error: "Guest Not Found"});
+                    return res.status(400).send({ error: "Request Error"});
                 }
                 break
             default:
