@@ -1028,6 +1028,7 @@ __metadata:
     cookie-parser: ^1.4.6
     cookiejar: ^2.1.4
     cors: ^2.8.5
+    debug: ^4.3.4
     dotenv: ^16.3.1
     dotenv-cli: ^7.3.0
     encoding: ^0.1.13
