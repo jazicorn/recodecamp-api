@@ -37,7 +37,8 @@ class App {
 
     private initMiddlewares() {
         this.app.use(cors({
-            origin: CORS_URLS
+            credentials: true,
+            origin: CORS_URLS,
         }));
         // for parsing application/json
         this.app.use(bodyParser.json());
@@ -46,19 +47,19 @@ class App {
         this.app.use(express.static(__dirname + "/templates/static"));
         // for parsing cookies
         this.app.use(cookieParser());
-
         this.app.use( (req, res, next) => {
             res.header("Access-Control-Allow-Origin", "*");
             res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
             res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
             next();
         });
-        this.app.options("/", (req, res) => {
-            res.setHeader("Access-Control-Allow-Origin", "*");
-            res.setHeader("Access-Control-Allow-Methods", "PUT, POST, GET, DELETE, OPTIONS");
-            res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-            res.sendStatus(204);
-        });
+        this.app.options('*', cors());
+        // this.app.options("/", (req, res) => {
+        //     res.header("Access-Control-Allow-Origin", "*");
+        //     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+        //     res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
+        //     res.sendStatus(204);
+        // });
     }
 
     private initPublicControllers(publicControllers) {
