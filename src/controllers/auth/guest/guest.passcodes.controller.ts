@@ -13,7 +13,6 @@ import sql from '../../../config/db';
 import { createTransporter, attachmentUpload, Storage } from '../../../middleware/nodemailer';
 import { createEmailHtml } from '../../../templates/_email';
 import { accountValidation, mailOptionsAccountValidation } from '../../../templates/accountValidation';
-import { accountWelcome } from '../../../templates/accountWelcome';
 import * as dotenv from 'dotenv';
 dotenv.config();
 

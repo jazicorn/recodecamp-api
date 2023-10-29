@@ -1,5 +1,3 @@
-import { Question } from './types.question'
-
 export interface Student extends User {
     _STUDENT_ID: string,
     _STUDENT_CREATED_AT: Date,
@@ -19,7 +17,7 @@ export interface Admin extends User {
     _ADMIN_PASSCODE_CONFIRMED: boolean,
     _ADMIN_STATUS: boolean,
     _ADMIN_POINTS: number | null,
-    _ADMIN_COURSES: Course[] | null,
+    _ADMIN_COURSES: number[] | string[] | null,
 }
 
 export interface User {
@@ -59,7 +57,7 @@ export type Course = {
     _COURSE_UPDATED_AT: Date;
     _COURSE_COMPLETED_AT: Date | null;
     _COURSE_SUBJECT: string;
-    _COURSE_ITEMS: Question[] | null;
+    _COURSE_ITEMS: number[] | string[] | null;
     _COURSE_COMPLETE: boolean;
     _COURSE_POINTS: number;
 };
