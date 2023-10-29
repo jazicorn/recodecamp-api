@@ -4,7 +4,7 @@ dotenv.config();
 // Nodemailer
 import nodemailer from "nodemailer";
 // Googleapis
-import { google } from "googleapis";
+const {google} = require("googleapis");
 // Pull out OAuth from googleapis
 const OAuth2 = google.auth.OAuth2;
 // Import multer
