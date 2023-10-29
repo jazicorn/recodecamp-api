@@ -36,10 +36,7 @@ class App {
     }
 
     private initMiddlewares() {
-        this.app.use(cors({
-            credentials: true,
-            origin: CORS_URLS,
-        }));
+        this.app.use(cors());
         // for parsing application/json
         this.app.use(bodyParser.json());
         // for parsing multipart/form-data
