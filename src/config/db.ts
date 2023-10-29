@@ -72,7 +72,7 @@ const config = () => {
         //         _COURSES VARCHAR(255) NOT NULL);`.simple();
         //     }
         //     seedDB();
-        // }
+        }
         return sql
     } catch(e) {
         if( DATABASE_ENV === "Production") {
