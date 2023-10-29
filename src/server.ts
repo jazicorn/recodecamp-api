@@ -9,7 +9,7 @@ import multer from 'multer';
 const upload = multer();
 import * as dotenv from 'dotenv';
 dotenv.config();
-const { DATABASE_URL, DATABASE_ENV } = process.env;
+const { DATABASE_URL, DATABASE_ENV, CORS_URLS } = process.env;
 
 if( DATABASE_ENV === "Production") {
     console.log(`---\n🔄 Production Server Loading...\n---`);
@@ -25,12 +25,10 @@ const urlEncodedParserTrue = bodyParser.urlencoded({ extended: true });
 class App {
     public app: Application;
     public port: number;
-    private corsOptions;
 
     constructor(publicControllers, authControllers, controllers) {
-        this.app = express();
         this.port = parseInt(process.env.PORT as string) || 8000;
-        this.corsOptions = process.env.CORS_URLS;
+        this.app = express();
         this.initMiddlewares();
         this.initPublicControllers(publicControllers);
         this.initAuthControllers(authControllers);
@@ -39,7 +37,7 @@ class App {
 
     private initMiddlewares() {
         this.app.use(cors({
-            origin: this.corsOptions
+            origin: CORS_URLS
         }));
         // for parsing application/json
         this.app.use(bodyParser.json());
