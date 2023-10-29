@@ -5,7 +5,7 @@ import { z } from "zod";
 import path from 'path';
 import multer from 'multer';
 import fs from 'fs';
-import nodemailer from 'nodemailer';
+const nodemailer = require("nodemailer");
 import { v4 as uuidv4 } from 'uuid';
 import { Guest } from '../../../classes/guest';
 import { _Guest } from  '../../../types/types.guest';

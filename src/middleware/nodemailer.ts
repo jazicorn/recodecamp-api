@@ -2,7 +2,7 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
 // Nodemailer
-import nodemailer from "nodemailer";
+const nodemailer = require("nodemailer");
 // Googleapis
 const {google} = require("googleapis");
 // Pull out OAuth from googleapis
