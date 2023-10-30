@@ -217,7 +217,7 @@ class Guest_Routes {
                         return res.cookie("_ACCESS_TOKEN", getToken, {
                             httpOnly: true,
                             secure: true,
-                            sameSite: 'strict',
+                            sameSite: 'none',
                         }).status(200).send({data: guestObj});
                     } else {
                         return res.status(400).send({ error: "Invalid Data" });
