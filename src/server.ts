@@ -23,12 +23,12 @@ class App {
     private corsOptions;
 
     constructor(authControllers, controllers) {
+        this.corsOptions = process.env.CORS_URLS;
         this.app = express();
         this.port = parseInt(process.env.PORT as string) || 8000;
         this.initMiddlewares();
         this.initAuthControllers(authControllers);
         this.initControllers(controllers);
-        this.corsOptions = process.env.CORS_URLS;
     }
 
     private initMiddlewares() {
