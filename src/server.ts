@@ -11,7 +11,7 @@ const { DATABASE_URL, DATABASE_ENV } = process.env;
 
 if( DATABASE_ENV === "Production") {
     console.log(`---\n🔄 Production Server Loading...\n---`);
-} else if( DATABASE_ENV === "staging") {
+} else if( DATABASE_ENV === "Staging") {
     console.log(`---\n🔄 Staging Server Loading...\n---`);
 } else {
     console.log(`---\n🔄 Development Server Loading...\n---`);
@@ -69,7 +69,7 @@ class App {
 
     private initControllers(controllers) {
         controllers.forEach((controller) => {
-            this.app.use('/', controller.router);
+            this.app.use('/api', controller.router);
         });
     }
 
@@ -79,7 +79,7 @@ class App {
                 console.log(
                     `🏃🏿‍♀️ Production Server Running Here 👉 http://localhost:${this.port}\n---`
                 );
-            } else if( DATABASE_ENV === "staging") {
+            } else if( DATABASE_ENV === "Staging") {
                 console.log(
                     `🏃🏿‍♀️ Staging Server Running Here 👉 http://localhost:${this.port}\n---`
                 );
