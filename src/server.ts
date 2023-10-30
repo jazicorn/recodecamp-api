@@ -7,7 +7,7 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import * as dotenv from 'dotenv';
 dotenv.config();
-const { DATABASE_URL, DATABASE_ENV } = process.env;
+const { CORS_URL1, DATABASE_URL, DATABASE_ENV } = process.env;
 
 if( DATABASE_ENV === "Production") {
     console.log(`---\n🔄 Production Server Loading...\n---`);
@@ -23,7 +23,7 @@ class App {
     private corsOptions;
 
     constructor(authControllers, controllers) {
-        this.corsOptions = process.env.CORS_URLS;
+        this.corsOptions = CORS_URL1;
         this.app = express();
         this.port = parseInt(process.env.PORT as string) || 8000;
         this.initMiddlewares();
@@ -38,6 +38,7 @@ class App {
         this.app.use(bodyParser.json());
         this.app.use(cookieParser());
         this.app.use(cors({
+            credentials: true,
             origin: this.corsOptions
         }));
         this.app.use( (req, res, next) => {
