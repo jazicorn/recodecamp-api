@@ -7,18 +7,17 @@ const { DATABASE_URL, DATABASE_ENV } = process.env;
 
 const config = () => {
     try {
-
-        if( DATABASE_ENV === "Production") {
-            console.log("🗄️  Production Database \n---");
-        } else if( DATABASE_ENV === "staging") {
-            console.log("🗄️  Staging Database \n---");
+        if (DATABASE_ENV === 'Production') {
+            console.log('🗄️  Production Database \n---');
+        } else if (DATABASE_ENV === 'staging') {
+            console.log('🗄️  Staging Database \n---');
         } else {
-            console.log("🗄️  Development Database\n---");
+            console.log('🗄️  Development Database\n---');
         }
 
-        const sql = postgres(DATABASE_URL, {ssl: 'require'});
+        const sql = postgres(DATABASE_URL, { ssl: 'require' });
 
-        if( DATABASE_ENV === "development") {
+        if (DATABASE_ENV === 'Development') {
             async function seedDB() {
                 await sql`DROP TABLE IF EXISTS _GUEST;
                 CREATE TABLE IF NOT EXISTS _GUEST(
@@ -73,19 +72,19 @@ const config = () => {
             }
             seedDB();
         }
-        return sql
-    } catch(e) {
-        if( DATABASE_ENV === "Production") {
-            console.log("❌  Production Database \n---");
-        } else if( DATABASE_ENV === "staging") {
-            console.log("❌  Staging Database \n---");
+        return sql;
+    } catch (e) {
+        if (DATABASE_ENV === 'Production') {
+            console.log('❌  Production Database \n---');
+        } else if (DATABASE_ENV === 'Staging') {
+            console.log('❌  Staging Database \n---');
         } else {
-            console.log("❌  Development Database\n---");
+            console.log('❌  Development Database\n---');
         }
         console.log(`Database Error:\n${e}\n---\n`);
     }
-}
+};
 
 const sql = config();
 
-export default sql
+export default sql;
