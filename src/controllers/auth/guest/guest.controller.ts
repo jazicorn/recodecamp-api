@@ -135,7 +135,12 @@ class Guest_Routes {
                         const getGuest = await sql`SELECT * FROM _GUEST WHERE _ID = ${guest._ID}`;
                         //console.log("guest info:", getGuest);
                         if(getGuest !== undefined) {
-                            return res.status(200).send({ data: {}});
+                            return res.status(200).send({
+                                data: {
+                                    email : getGuest[0]._email,
+                                    passcode: getGuest[0]._passcode
+                                },
+                            });
                         } else {
                             return res.status(500).send({ error: "Guest Creation Error" });
                         }
