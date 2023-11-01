@@ -40,7 +40,7 @@ class Guest_Routes {
     public initializeRoutes() {
         this.router.post(this.pathGuestNew, this.guestNew);
         this.router.post(this.pathGuestLogin, this.guestLogin);
-        this.router.delete(this.pathGuestLogout, auth, this.guestLogout);
+        this.router.delete(this.pathGuestLogout, this.guestLogout);
         this.router.delete(this.pathGuestDelete, auth, this.guestDelete);
         this.router.get(this.pathGuestAuthMe, auth, this.guestAuthMe);
         this.router.get(this.pathGuestVerify, auth, this.guestVerify);
@@ -243,7 +243,7 @@ class Guest_Routes {
                 return res.clearCookie("_ACCESS_TOKEN", {
                     httpOnly: true,
                     secure: true,
-                    sameSite: 'strict',
+                    sameSite: 'none',
                 }).status(200).send({ data: {}});
                 break
             default:
