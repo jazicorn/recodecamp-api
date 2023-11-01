@@ -24,6 +24,7 @@ class App {
 
     constructor(authControllers, controllers) {
         this.corsOptions = CORS_URL1;
+        //console.log("corsOptions:", this.corsOptions);
         this.app = express();
         this.port = parseInt(process.env.PORT as string) || 8000;
         this.initMiddlewares();

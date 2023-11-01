@@ -3,6 +3,7 @@
 import App from './server';
 import Index from './controllers/index.controller';
 import guestRoutes from './controllers/auth/guest/guest.controller';
+import guestPasscodesRoutes from './controllers/auth/guest/guest.passcodes.controller';
 import jsComments from './controllers/questions/javascript/comments.controller';
 import javaComments from './controllers/questions/java/comments.controller';
 import pythonComments from './controllers/questions/python/comments.controller';
@@ -20,6 +21,7 @@ const app = new App(
     [
         new Index(),
         new guestRoutes(),
+        new guestPasscodesRoutes(),
         new jsComments(),
         new javaComments(),
         new pythonComments(),
