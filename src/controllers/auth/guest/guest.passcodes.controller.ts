@@ -17,11 +17,6 @@ class Guest_Routes_Passcodes {
     public pathGuestValidate = '/guest/validate/account';
     /**Express Router*/
     public router = Router();
-    /**Cors Options*/
-    private corsOptions = cors({
-        origin: process.env.WEBURL,
-        optionsSuccessStatus: 200
-    });
 
     constructor() {
         this.initializeRoutes();
