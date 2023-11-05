@@ -15,6 +15,8 @@ dotenv.config();
 class Guest_Routes_Passcodes {
     /**Public: Guest Registers Passcode*/
     public pathGuestValidate = '/guest/validate/account';
+    /**Public: Create Guest*/
+    public pathGuestPasscode = '/guest/validate/passcode';
     /**Express Router*/
     public router = Router();
 
@@ -24,16 +26,42 @@ class Guest_Routes_Passcodes {
 
     public initializeRoutes() {
         this.router.post(this.pathGuestValidate, this.guestValidateAccount);
+        this.router.post(this.pathGuestPasscode, this.guestPasscode);
     }
+
+    /**Public: Guest Passcode*/
+    public guestPasscode = async (req: Request, res: Response) => {
+        switch(req.method) {
+            case('POST'):
+                try {
+                    const data = req.body;
+                    //console.log("passcodeRequestEmail:", data._EMAIL);
+
+                    /**Retrieve Guest */
+                    // Check Email in database
+                    const getGuest = await sql`SELECT _EMAIL, _PASSCODE, _PASSCODE_CONFIRMED FROM _GUEST WHERE _EMAIL = ${data._EMAIL}`;
+                    const results = getGuest[0];
+                    //console.log("guestResult:", results);
+
+                    return res.status(200).send(results);
+
+                } catch {
+                    return res.status(500).send({ error: "Database Connection Error" });
+                }
+                break
+            default:
+                return res.status(405).send({ error: `${req.method} Method Not Allowed` });
+        }
+    };
 
     /**Public: Guest Confirms Account Validate Passcode*/
     public guestValidateAccount = async (req: Request, res: Response) => {
         switch (req.method) {
             case 'POST':
                 try {
-                    const data = req.body;
+                    const info = req.body;
                     //console.log("data:", data);
-                    const passcode = data._PASSCODE;
+                    const passcode = info._PASSCODE;
                     const date = new Date();
                     //console.log(date);
                     /** Update Confirmed to true */
@@ -71,16 +99,22 @@ class Guest_Routes_Passcodes {
                     const updateGuestPasscode = await sql`
                         UPDATE _GUEST
                         SET _PASSCODE = ${newId}
-                        WHERE _PASSCODE = ${passcode}
-                        RETURNING *;
+                        WHERE _PASSCODE = ${passcode};
                     `;
-                    const guestResult = updateGuestPasscode[0];
-                    //console.log("guestResult:", guestResult);
+                    /** Update User */
+                    const guestValidUpdated = await sql`
+                        SELECT _PASSCODE_CONFIRMED
+                        FROM _GUEST
+                        WHERE _PASSCODE = ${newId};
+                    `;
+                    const guestResult = guestValidUpdated[0];
+                    //console.log("guestResult:", guestValidUpdated);
+                    //console.log("guestResult._PASSCODE_CONFIRMED:", guestResult._passcode_confirmed);
 
                     if (guestResult !== undefined) {
                         return res
                             .status(200)
-                            .send({ message: 'Successful | Account Confirmed' });
+                            .send({ data: guestValidUpdated[0]});
                     }
                 } catch {
                     return res.status(500).send({ error: 'Database Error' });
@@ -88,11 +122,10 @@ class Guest_Routes_Passcodes {
                 break;
             default:
                 return res
-                    .status(400)
+                    .status(405)
                     .send({ error: `${req.method} Method Not Allowed` });
         }
     };
-
 }
 
 export default Guest_Routes_Passcodes;

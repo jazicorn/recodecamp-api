@@ -18,8 +18,10 @@
     "pretty-quick": "pretty-quick"
   },
   "dependencies": {
+    "@defer/client": "^1.13.0",
     "@neondatabase/serverless": "^0.6.0",
     "@types/cookie-parser": "^1.4.4",
+    "axios": "^1.6.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
     "cookie-parser": "^1.4.6",
