@@ -218,6 +218,8 @@ class Guest_Routes {
                         return res.status(400).send({ error: "User Network Error" });
                     } else if(!validEmail || !validPasswordCompare) {
                         return res.status(400).send({ error: "Invalid Guest Information" });
+                    } else if(guestObj._PASSCODE_CONFIRMED === false ) {
+                        return res.status(200).send({data: guestObj});
                     } else if(validIP && validEmail && validPasswordCompare) {
                         return res.cookie("_ACCESS_TOKEN", getToken, {
                             httpOnly: true,
@@ -364,7 +366,7 @@ class Guest_Routes {
                     //console.log("guest:", guestResult);
                     if (!decoded) {
                         const result = { data: {} }
-                        return res.status(403).json(result);
+                        return res.status(403).send(result);
                     }
                     if (!guestResult) {
                         const result = { data: {} }
@@ -379,6 +381,9 @@ class Guest_Routes {
                     // Create Guest Object
                     const guestObj = new Guest(guestResult);
                     //console.log("guest:", guestObj);
+                    if(guestObj._PASSCODE_CONFIRMED === false) {
+                        return res.status(403).send({ error: "guest passcode not confirmed"});
+                    }
                     const result = { data: guestObj }
                     return res.status(200).json(result);
                 }
