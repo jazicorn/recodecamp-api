@@ -76,7 +76,7 @@ export default class VarGeneral {
                     const results = await sql`SELECT * FROM _QUESTIONS WHERE _QUESTIONS_CATEGORY = 'variables'`;
 
                     return res.status(200).send({ data: results });
-                    }
+
                 } catch {
                     return res.status(500).send({ error: "Something went wrong" });
                 }
@@ -90,10 +90,11 @@ export default class VarGeneral {
         switch(req.method) {
             case('GET'):
                 try {
+                        const id = req.body;
                         const results = await sql`SELECT * FROM _QUESTIONS WHERE _QUESTION_ID = ${id}`;
 
                         return res.status(200).send({ data: results });
-                    }
+
                 } catch {
                     return res.status(500).send({ error: "Something went wrong" });
                 }
@@ -107,10 +108,11 @@ export default class VarGeneral {
         switch(req.method) {
             case('UPDATE'):
                 try {
+                        const id = req.body;
                         const results = await sql`SELECT * FROM _QUESTIONS WHERE _QUESTION_ID = ${id}`;
 
                         return res.status(200);
-                    }
+
                 } catch {
                     return res.status(500).send({ error: "Something went wrong" });
                 }
@@ -180,10 +182,11 @@ export default class VarGeneral {
         switch(req.method) {
             case('DELETE'):
                 try {
+                        const id = req.body;
                         const results = await sql`DELETE * FROM _QUESTIONS WHERE _QUESTION_ID = ${id}`;
 
                         return res.status(200);
-                    }
+
                 } catch {
                     return res.status(500).send({ error: "Something went wrong" });
                 }

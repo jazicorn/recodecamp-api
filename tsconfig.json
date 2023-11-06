@@ -16,9 +16,10 @@
       "noResolve": false,
       "sourceMap": true,
       "allowJs": true,
-      "composite": true
+      "composite": true,
+      "jsx": "react"
     },
-    "include": ["./src/**/*.ts", "tests/**/*.ts"],
+    "include": ["./src/**/*.ts", "tests/**/*.ts", "./src/**/*.tsx", "tests/**/*.tsx"],
     "exclude":[
         "./node_modules",
         "./docs",

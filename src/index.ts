@@ -1,6 +1,7 @@
 'use strict';
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 import App from './server';
+//import Views from './controllers/email.controller';
 import Index from './controllers/index.controller';
 import guestRoutes from './controllers/auth/guest/guest.controller';
 import guestPasscodesRoutes from './controllers/auth/guest/guest.passcodes.controller';
@@ -13,10 +14,10 @@ import VarScope from './controllers/questions/javascript/variables/var.scope.con
 import VarScopeReassign from './controllers/questions/javascript/variables/var.scope.reassign.controller';
 import * as dotenv from 'dotenv';
 
-dotenv.config();
-const { DATABASE_URL, DATABASE_ENV } = process.env;
-
 const app = new App(
+    [
+        //new Views(),
+    ],
     [],
     [
         new Index(),

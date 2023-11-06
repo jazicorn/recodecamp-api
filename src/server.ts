@@ -5,6 +5,8 @@ import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import bodyParser from 'body-parser';
 import cors from 'cors';
+import multer from 'multer';
+const upload = multer();
 import * as dotenv from 'dotenv';
 dotenv.config();
 const { CORS_URL1, DATABASE_URL, DATABASE_ENV } = process.env;
@@ -17,26 +19,33 @@ if( DATABASE_ENV === "Production") {
     console.log(`---\n🔄 Development Server Loading...\n---`);
 }
 
+const urlEncodedParserFalse = bodyParser.urlencoded({ extended: false });
+const urlEncodedParserTrue = bodyParser.urlencoded({ extended: true });
+
 class App {
     public app: Application;
     public port: number;
-    private corsOptions;
 
     constructor(authControllers, controllers) {
         this.corsOptions = CORS_URL1;
         //console.log("corsOptions:", this.corsOptions);
         this.app = express();
         this.port = parseInt(process.env.PORT as string) || 8000;
+        this.app = express();
         this.initMiddlewares();
+        this.initPublicControllers(publicControllers);
         this.initAuthControllers(authControllers);
         this.initControllers(controllers);
     }
 
     private initMiddlewares() {
-        this.app.use(bodyParser.urlencoded({
-            extended: true
-        }));
+        this.app.use(cors());
+        // for parsing application/json
         this.app.use(bodyParser.json());
+        // for parsing multipart/form-data
+        this.app.use(express.static(__dirname + "/public"));
+        this.app.use(express.static(__dirname + "/templates/static"));
+        // for parsing cookies
         this.app.use(cookieParser());
         this.app.use(cors({
             credentials: true,
@@ -54,18 +63,11 @@ class App {
             res.setHeader("Access-Control-Allow-Headers", "Content-Type");
             res.sendStatus(204);
         });
-        // this.app.set('trust proxy', 1) // trust first proxy
-        // this.app.use(session({
-        //     secret: process.env.SECRET_TOKEN,
-        //     saveUninitialized:true,
-        //     cookie: { sameSite: 'strict', secure: false, maxAge: 1000 * 60 * 60 * 24 },
-        //     resave: false
-        // }));
     }
 
-    private initAuthControllers(controllers) {
-        controllers.forEach((controller) => {
-            this.app.use('/auth', controller.router);
+    private initAuthControllers(authControllers) {
+        authControllers.forEach((controller) => {
+            this.app.use('/api/auth', urlEncodedParserTrue, controller.router);
         });
     }
 

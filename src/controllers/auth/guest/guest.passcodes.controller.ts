@@ -1,5 +1,12 @@
 import { Request, Response } from 'express';
 import Router from 'express-promise-router';
+import cors from 'cors';
+import { z } from "zod";
+import path from 'path';
+import multer from 'multer';
+import fs from 'fs';
+const nodemailer = require("nodemailer");
+import { v4 as uuidv4 } from 'uuid';
 import { Guest } from '../../../classes/guest';
 import { _Guest } from  '../../../types/types.guest';
 import sql from '../../../config/db';
@@ -9,7 +16,6 @@ import { z } from "zod";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import * as dotenv from 'dotenv';
-
 dotenv.config();
 
 class Guest_Routes_Passcodes {
