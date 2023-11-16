@@ -9,7 +9,6 @@ export class User implements User {
     _UPDATED_AT!: Date;
     _GUEST!: boolean;
     _ADMIN!: boolean;
-    _ACCESS_TOKEN!: string;
     _FIRST_LOGIN!: boolean;
     _ADMIN!: boolean;
     _SUBSCRIPTION!: Array<string | number> | string;

@@ -4,7 +4,6 @@ export interface _Guest {
     _ID: string;
     _CREATED_AT: Date;
     _UPDATED_AT: Date;
-    _ACCESS_TOKEN: string;
     _FIRST_LOGIN: boolean
     _ADMIN: boolean;
     _SUBSCRIPTION: Array<string | number> | string;

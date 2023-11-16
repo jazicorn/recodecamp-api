@@ -92,7 +92,6 @@ class Guest_Routes {
                         _ID,
                         _CREATED_AT,
                         _UPDATED_AT,
-                        _ACCESS_TOKEN,
                         _FIRST_LOGIN,
                         _ADMIN,
                         _SUBSCRIPTION,
@@ -114,7 +113,6 @@ class Guest_Routes {
                             ${guest._ID},
                             ${guest._CREATED_AT},
                             ${guest._UPDATED_AT},
-                            ${guest._ACCESS_TOKEN},
                             ${guest._FIRST_LOGIN},
                             ${guest._ADMIN},
                             ${guest._SUBSCRIPTION},
@@ -209,8 +207,6 @@ class Guest_Routes {
                         allowInsecureKeySizes: true,
                         expiresIn: 86400, // 24 hours
                     });
-                    // Save Guest Token
-                    guestObj._ACCESS_TOKEN = getToken;
 
                     //console.log("guestObj:", guestObj)
 
