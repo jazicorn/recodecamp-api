@@ -19,19 +19,19 @@ components:
     Category:
       $ref: 'src/docs/models/category.schema.yaml'
 paths:
-  /:
+  /api:
     $ref: 'src/docs/paths/index.docs.yaml'
-  /categories/js:
+  /api/categories/js:
     $ref: 'src/docs/paths/categories/javascript.docs.yaml'
-  /categories/java:
+  /api/categories/java:
     $ref: 'src/docs/paths/categories/java.docs.yaml'
-  /categories/py:
+  /api/categories/py:
     $ref: 'src/docs/paths/categories/python.docs.yaml'
-  /js/var/declare/all:
+  /api/js/var/declare/all:
     $ref: 'src/docs/paths/langs/javascript/js-var-declare-all.docs.yaml'
-  /js/var/declare/var:
+  /api/js/var/declare/var:
     $ref: 'src/docs/paths/langs/javascript/js-var-declare-var.docs.yaml'
-  /js/var/declare/const:
+  /api/js/var/declare/const:
     $ref: 'src/docs/paths/langs/javascript/js-var-declare-const.docs.yaml'
-  /js/var/declare/let:
+  /api/js/var/declare/let:
     $ref: 'src/docs/paths/langs/javascript/js-var-declare-let.docs.yaml'
