@@ -7,7 +7,7 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import * as dotenv from 'dotenv';
 dotenv.config();
-const { CORS_URL1, DATABASE_URL, DATABASE_ENV } = process.env;
+const { CORS_URL1, CORS_URL2, CORS_URL3, DATABASE_URL, DATABASE_ENV } = process.env;
 
 if( DATABASE_ENV === "Production") {
     console.log(`---\n🔄 Production Server Loading...\n---`);
@@ -23,7 +23,7 @@ class App {
     private corsOptions;
 
     constructor(authControllers, controllers) {
-        this.corsOptions = CORS_URL1;
+        this.corsOptions = [CORS_URL1, CORS_URL2, CORS_URL3];
         //console.log("corsOptions:", this.corsOptions);
         this.app = express();
         this.port = parseInt(process.env.PORT as string) || 8000;
@@ -43,13 +43,17 @@ class App {
             origin: this.corsOptions
         }));
         this.app.use( (req, res, next) => {
-            res.header("Access-Control-Allow-Origin", `${this.corsOptions}`);
+            const origin = req.headers.origin;
+            res.header('Access-Control-Allow-Origin', `${origin}`);
+            //res.header("Access-Control-Allow-Origin", `${this.corsOptions}`);
             res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
             res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
             next();
         });
         this.app.options("/", (req, res) => {
-            res.setHeader("Access-Control-Allow-Origin", `${this.corsOptions}`);
+            const origin = req.headers.origin;
+            res.setHeader('Access-Control-Allow-Origin', `${origin}`);
+            //res.setHeader("Access-Control-Allow-Origin", `${this.corsOptions}`);
             res.setHeader("Access-Control-Allow-Methods", "PUT, POST, GET, DELETE, OPTIONS");
             res.setHeader("Access-Control-Allow-Headers", "Content-Type");
             res.sendStatus(204);
